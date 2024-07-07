@@ -1,80 +1,60 @@
+import tkinter
 from tkinter import *
 
-root = Tk()
-root.title('Calculator')
+root=Tk()
+root.title("Simple Calculator")
+root.geometry("570x600+100+200")
+root.resizable(False,False)
+root.configure(bg="#17161b")
 
-# get user input and place it in textfield
-i = 0
-def getvariables(num):
-    global i
-    display.insert(i, num)
-    i += 1
+equation = ""
+
+def show(value):
+    global equation
+    equation+=value
+    label_result.config(text=equation)
 
 def calculate():
-    entire_string = display.get()
-    try:
-        result = eval(entire_string)
-        clear_all()
-        display.insert(0, result)
-    except Exception:
-        clear_all()
-        display.insert(0, "Error")
+    global equation
+    result = ""
+    if equation !="":
+        try:
+            result = eval(equation)
+        except:
+            result = "Error"
+            equation = ""
+    label_result.config(text=result)
 
-def get_operation(operator):
-    global i
-    length = len(operator)
-    display.insert(i, operator)
-    i += length
+def clear():
+    global equation
+    equation = ""
+    label_result.config(text=equation)
+label_result = Label(root, width=25, height=2, text="", font=("arial", 30))
+label_result.pack()
 
-def clear_all():
-    display.delete(0, END)
+Button(root, text="C", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#3697f5", command=lambda: clear()).place(x=10,y=100)
+Button(root, text="/", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("/")).place(x=150,y=100)
+Button(root, text="%", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("%")).place(x=290,y=100)
+Button(root, text="*", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("*")).place(x=430,y=100)
 
-def undo():
-    entire_string = display.get()
-    if len(entire_string):
-        new_string = entire_string[:-1]
-        clear_all()
-        display.insert(0, new_string)
-    else:
-        clear_all()
-        display.insert(0, "Error")
+Button(root, text="7", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("7")).place(x=10,y=200)
+Button(root, text="8", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("8")).place(x=150,y=200)
+Button(root, text="9", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("9")).place(x=290,y=200)
+Button(root, text="-", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("-")).place(x=430,y=200)
 
-# adding the input field
-display = Entry(root)
-display.grid(row=1, column=0, columnspan=6, sticky=W+E)
+Button(root, text="4", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("4")).place(x=10,y=300)
+Button(root, text="5", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("5")).place(x=150,y=300)
+Button(root, text="6", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("6")).place(x=290,y=300)
+Button(root, text="+", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("+")).place(x=430,y=300)
 
-# adding buttons to the calculator
-Button(root, text="1", command=lambda: getvariables(1)).grid(row=2, column=0)
-Button(root, text="2", command=lambda: getvariables(2)).grid(row=2, column=1)
-Button(root, text="3", command=lambda: getvariables(3)).grid(row=2, column=2)
+Button(root, text="1", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("1")).place(x=10,y=400)
+Button(root, text="2", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("2")).place(x=150,y=400)
+Button(root, text="3", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("3")).place(x=290,y=400)
+Button(root, text="0", width=11, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show("0")).place(x=10,y=500)
 
-Button(root, text="4", command=lambda: getvariables(4)).grid(row=3, column=0)
-Button(root, text="5", command=lambda: getvariables(5)).grid(row=3, column=1)
-Button(root, text="6", command=lambda: getvariables(6)).grid(row=3, column=2)
+Button(root, text=".", width=5, height=1, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#2a2d36", command=lambda: show(".")).place(x=290,y=500)
+Button(root, text="=", width=5, height=3, font=("arial",30,"bold"), bd=1, fg="#fff", bg="#fe9037", command=lambda: calculate()).place(x=430,y=400)
 
-Button(root, text="7", command=lambda: getvariables(7)).grid(row=4, column=0)
-Button(root, text="8", command=lambda: getvariables(8)).grid(row=4, column=1)
-Button(root, text="9", command=lambda: getvariables(9)).grid(row=4, column=2)
 
-# adding other buttons
-Button(root, text="AC", command=lambda: clear_all()).grid(row=5, column=0)
-Button(root, text="0", command=lambda: getvariables(0)).grid(row=5, column=1)
-Button(root, text="=", command=lambda: calculate()).grid(row=5, column=2)
-
-Button(root, text="+", command=lambda: get_operation("+")).grid(row=2, column=3)
-Button(root, text="-", command=lambda: get_operation("-")).grid(row=3, column=3)
-Button(root, text="*", command=lambda: get_operation("*")).grid(row=4, column=3)
-Button(root, text="/", command=lambda: get_operation("/")).grid(row=5, column=3)
-
-# adding new operations
-Button(root, text="pi", command=lambda: get_operation("3.14")).grid(row=2, column=4)
-Button(root, text="%", command=lambda: get_operation("%")).grid(row=3, column=4)
-Button(root, text="(", command=lambda: get_operation("(")).grid(row=4, column=4)
-Button(root, text="exp", command=lambda: get_operation("**")).grid(row=5, column=4)
-
-Button(root, text="<-", command=lambda: undo()).grid(row=2, column=5)
-Button(root, text="x!", command=lambda: get_operation("!")).grid(row=3, column=5)
-Button(root, text=")", command=lambda: get_operation(")")).grid(row=4, column=5)
-Button(root, text="^2", command=lambda: get_operation("**")).grid(row=5, column=5)
 
 root.mainloop()
